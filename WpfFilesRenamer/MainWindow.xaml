@@ -1,0 +1,18 @@
+﻿<Window x:Class="WpfFilesRenamer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfFilesRenamer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TextBox x:Name="tbPath" HorizontalAlignment="Left" Margin="99,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="372"/>
+        <Label x:Name="label" Content="Path to folder:" HorizontalAlignment="Left" Margin="10,42,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Rename" HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="88" Click="button_Click"/>
+        <Label x:Name="label1" Content="Name pattern:" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbNamePattern" HorizontalAlignment="Left" Margin="99,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ListBox x:Name="listBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,254,0,0"/>
+
+    </Grid>
+</Window>
