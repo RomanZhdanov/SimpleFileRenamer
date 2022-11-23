@@ -7,12 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="tbPath" HorizontalAlignment="Left" Margin="99,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="372"/>
+        <TextBox x:Name="tbPath" HorizontalAlignment="Left" Margin="99,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="372" IsEnabled="False"/>
         <Label x:Name="label" Content="Path to folder:" HorizontalAlignment="Left" Margin="10,42,0,0" VerticalAlignment="Top"/>
         <Button x:Name="button" Content="Rename" HorizontalAlignment="Center" VerticalAlignment="Center" Height="41" Width="88" Click="button_Click"/>
         <Label x:Name="label1" Content="Name pattern:" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbNamePattern" HorizontalAlignment="Left" Margin="99,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <ListBox x:Name="listBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,254,0,0"/>
+        <Button x:Name="btnSelectPath" Content="Choose Directory" HorizontalAlignment="Left" Margin="485,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.404,-0.349" Click="btnSelectPath_Click"/>
 
     </Grid>
 </Window>

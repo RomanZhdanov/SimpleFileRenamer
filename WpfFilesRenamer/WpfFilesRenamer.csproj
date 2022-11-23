@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Test\p1gii01ssu1frdr6f1tjpdfn1giu4-0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
