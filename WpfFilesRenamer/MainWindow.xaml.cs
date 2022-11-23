@@ -64,7 +64,8 @@ namespace WpfFilesRenamer
 
             for (int i = 0; i < filesNames.Length; i++)
             {
-                var number = GetNumberFromString(filesNames[i]);
+                var fileName = System.IO.Path.GetFileNameWithoutExtension(filesNames[i]);
+                var number = GetNumberFromString(fileName);
 
                 filesDic[number] = filesNames[i];
             }
@@ -79,14 +80,18 @@ namespace WpfFilesRenamer
 
         private int GetNumberFromString(ReadOnlySpan<char> str)
         {
-            var digits = new char[str.Length];
-            int x = 0;
+            int startIndex = str.Contains('_') ? str.IndexOf('_') : str.IndexOf('-');
+            startIndex = startIndex > 0 ? startIndex + 1 : 0;
+            var slice = str.Slice(startIndex, str.Length - startIndex);
 
-            for (int i = 0; i < str.Length; i++)
+            int x = 0;
+            var digits = new char[slice.Length];
+
+            for (int i = 0; i < slice.Length; i++)
             {
-                if (Char.IsDigit(str[i]))
+                if (Char.IsDigit(slice[i]))
                 {
-                    digits[x] = str[i];
+                    digits[x] = slice[i];
                     x++;
                 }
             }
