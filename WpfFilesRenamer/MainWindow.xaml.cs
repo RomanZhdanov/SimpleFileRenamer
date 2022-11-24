@@ -85,7 +85,7 @@ namespace WpfFilesRenamer
             for (int i = 0; i < filesNames.Length; i++)
             {
                 var fileName = Path.GetFileNameWithoutExtension(filesNames[i]);
-                var number = GetNumberFromString(fileName);
+                var number = GetNumberFromFileName(fileName);
 
                 filesDic[number] = filesNames[i];
             }
@@ -98,21 +98,39 @@ namespace WpfFilesRenamer
             }
         }
 
-        private int GetNumberFromString(ReadOnlySpan<char> str)
+        private int GetNumberFromFileName(ReadOnlySpan<char> fileName)
         {
-            int startIndex = str.Contains('_') ? str.IndexOf('_') : str.IndexOf('-');
-            startIndex = startIndex > 0 ? startIndex + 1 : 0;
-            var slice = str.Slice(startIndex, str.Length - startIndex);
+            var partWithNumber = GetNamePartWithNumber(fileName);
+            
+            return GetNumberFromString(partWithNumber);
+        }
 
-            int x = 0;
-            var digits = new char[slice.Length];
+        private ReadOnlySpan<char> GetNamePartWithNumber(ReadOnlySpan<char> fileName)
+        {
+            const char hyphen = '-';
+            const char underscore = '_';
 
-            for (int i = 0; i < slice.Length; i++)
+            int startIndex = 0;
+
+            if (fileName.Contains(hyphen)) startIndex = fileName.IndexOf(hyphen);
+            if (fileName.Contains(underscore)) startIndex = fileName.IndexOf(underscore);
+
+            startIndex++;
+
+            return fileName.Slice(startIndex, fileName.Length - startIndex);
+        }
+
+        private static int GetNumberFromString(ReadOnlySpan<char> str)
+        {
+            int j = 0;
+            char[] digits = new char[str.Length];
+
+            for (int i = 0; i < str.Length; i++)
             {
-                if (Char.IsDigit(slice[i]))
+                if (char.IsDigit(str[i]))
                 {
-                    digits[x] = slice[i];
-                    x++;
+                    digits[j] = str[i];
+                    j++;
                 }
             }
 
