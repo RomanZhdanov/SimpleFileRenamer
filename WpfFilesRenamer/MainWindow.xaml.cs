@@ -3,17 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfFilesRenamer
 {
@@ -30,33 +20,63 @@ namespace WpfFilesRenamer
         private void button_Click(object sender, RoutedEventArgs e)
         {
             listBox.Items.Clear();
-            //var path = System.IO.Path.Combine(Environment.CurrentDirectory, tbPath.Text);
-            var path = tbPath.Text;
 
-            var directory = new DirectoryInfo(path);
+            var directory = new DirectoryInfo(tbPath.Text);
 
-            string[] files = directory.GetFiles().Select(f => f.Name).ToArray();
+            RenameFilesInDirectory(directory);
 
-            SortFilesNames(files);
+            RenameFilesInAllSubdirectories(directory);
+        }
 
+        private void RenameFilesInAllSubdirectories(DirectoryInfo directory)
+        {
+            foreach (var dir in directory.GetDirectories())
+            {
+                listBox.Items.Add("Directory: " + dir.Name);
+
+                RenameFilesInDirectory(dir);
+            }
+        }
+
+        private void RenameFilesInDirectory(DirectoryInfo directory)
+        {
+            var files = GetFiles(directory);
+
+            if (files != null && files.Length > 0)
+            {
+                RenameFiles(directory.FullName, files);
+            }
+        }
+
+        private string[] GetFiles(DirectoryInfo directory)
+        {
+            string[] files = directory.GetFiles().Select(f => f.Name).ToArray();     
+
+            SortFilesByNumberInName(files);
+
+            return files;
+        }
+
+        private void RenameFiles(string path, string[] files)
+        {
             for (int i = 0; i < files.Length; i++)
             {
-                var extention = System.IO.Path.GetExtension(files[i]);
-                var oldName = System.IO.Path.GetFileName(files[i]);
+                var extention = Path.GetExtension(files[i]);
+                var oldName = Path.GetFileName(files[i]);
                 var newName = string.Format("{0}{1}{2}", tbNamePattern.Text, i + 1, extention);
-                var oldPath = System.IO.Path.Combine(path, oldName);
-                var newPath = System.IO.Path.Combine(path, newName);
+                var oldPath = Path.Combine(path, oldName);
+                var newPath = Path.Combine(path, newName);
 
                 if (!File.Exists(newPath))
                 {
-                    System.IO.File.Move(oldPath, newPath);
+                    File.Move(oldPath, newPath);
                 }
 
                 listBox.Items.Add($"{oldName} => {newName}");
             }
         }
 
-        private void SortFilesNames(string[] filesNames)
+        private void SortFilesByNumberInName(string[] filesNames)
         {
             Dictionary<int, string> filesDic = new Dictionary<int, string>();
 
@@ -64,7 +84,7 @@ namespace WpfFilesRenamer
 
             for (int i = 0; i < filesNames.Length; i++)
             {
-                var fileName = System.IO.Path.GetFileNameWithoutExtension(filesNames[i]);
+                var fileName = Path.GetFileNameWithoutExtension(filesNames[i]);
                 var number = GetNumberFromString(fileName);
 
                 filesDic[number] = filesNames[i];
@@ -102,6 +122,7 @@ namespace WpfFilesRenamer
         private void btnSelectPath_Click(object sender, RoutedEventArgs e)
         {
             var ookiiDialog = new VistaFolderBrowserDialog();
+
             if (ookiiDialog.ShowDialog() == true)
             {
                 tbPath.Text = ookiiDialog.SelectedPath;
