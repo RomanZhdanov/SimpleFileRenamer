@@ -44,17 +44,15 @@ namespace WpfFilesRenamer
 
             if (files != null && files.Length > 0)
             {
+                SortFilesByNumberInName(files);
+
                 RenameFiles(directory.FullName, files);
             }
         }
 
         private string[] GetFiles(DirectoryInfo directory)
         {
-            string[] files = directory.GetFiles().Select(f => f.Name).ToArray();     
-
-            SortFilesByNumberInName(files);
-
-            return files;
+            return directory.GetFiles().Select(f => f.Name).ToArray();
         }
 
         private void RenameFiles(string path, string[] files)
@@ -115,13 +113,15 @@ namespace WpfFilesRenamer
             if (fileName.Contains(hyphen)) startIndex = fileName.IndexOf(hyphen);
             if (fileName.Contains(underscore)) startIndex = fileName.IndexOf(underscore);
 
-            startIndex++;
+            if (startIndex != 0 && ((startIndex + 1) < fileName.Length)) startIndex++;
 
             return fileName.Slice(startIndex, fileName.Length - startIndex);
         }
 
         private static int GetNumberFromString(ReadOnlySpan<char> str)
         {
+            if (str.Length == 0) return 0;
+
             int j = 0;
             char[] digits = new char[str.Length];
 
