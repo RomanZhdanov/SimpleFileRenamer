@@ -59,11 +59,8 @@ namespace WpfFilesRenamer
         {
             for (int i = 0; i < files.Length; i++)
             {
-                var extension = Path.GetExtension(files[i]);
-                var oldName = Path.GetFileName(files[i]);
-                var newName = string.Format("{0}{1}{2}", tbNamePattern.Text, i + 1, extension);
-                var oldPath = Path.Combine(path, oldName);
-                var newPath = Path.Combine(path, newName);
+
+                var (oldName, oldPath, newName, newPath) = GetPathsAndNames(files[i], i, path);
 
                 if (!File.Exists(newPath))
                 {
@@ -72,6 +69,17 @@ namespace WpfFilesRenamer
 
                 listBox.Items.Add($"{oldName} => {newName}");
             }
+        }
+
+        private (string oldName, string oldPath, string newName, string newPath) GetPathsAndNames(string file, int number, string path)
+        {
+            var extension = Path.GetExtension(file);
+            var oldName = Path.GetFileName(file);
+            var newName = string.Format("{0}{1}{2}", tbNamePattern.Text, number + 1, extension);
+            var oldPath = Path.Combine(path, oldName);
+            var newPath = Path.Combine(path, newName);
+
+            return (oldName, oldPath, newName, newPath);
         }
 
         private void SortFilesByNumberInName(string[] filesNames)
