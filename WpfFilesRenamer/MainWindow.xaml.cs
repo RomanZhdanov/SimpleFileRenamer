@@ -61,9 +61,9 @@ namespace WpfFilesRenamer
         {
             for (int i = 0; i < files.Length; i++)
             {
-                var extention = Path.GetExtension(files[i]);
+                var extension = Path.GetExtension(files[i]);
                 var oldName = Path.GetFileName(files[i]);
-                var newName = string.Format("{0}{1}{2}", tbNamePattern.Text, i + 1, extention);
+                var newName = string.Format("{0}{1}{2}", tbNamePattern.Text, i + 1, extension);
                 var oldPath = Path.Combine(path, oldName);
                 var newPath = Path.Combine(path, newName);
 
